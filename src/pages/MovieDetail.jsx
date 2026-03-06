@@ -1,8 +1,13 @@
-// src/pages/MovieDetail.jsx
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import movieDetailData from "../data/movieDetailData.json";
 
-function MovieDetail({ movie }) {
+function MovieDetail() {
+  const { id } = useParams();
+
+  const movie = movieDetailData.find(
+    (m) => m.id === Number(id)
+  );
+
   if (!movie) return <div>Loading...</div>;
 
   return (
@@ -28,16 +33,4 @@ function MovieDetail({ movie }) {
   );
 }
 
-// wrapper: params 받아 fetch 후 MovieDetail에 전달
-export default function MovieDetailPage() {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=YOUR_API_KEY&language=ko-KR`)
-      .then(res => res.json())
-      .then(data => setMovie(data));
-  }, [id]);
-
-  return <MovieDetail movie={movie} />;
-}
+export default MovieDetail;
