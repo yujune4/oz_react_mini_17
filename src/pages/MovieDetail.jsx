@@ -1,26 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getMovieDetail } from "../api/tmdb.js";
+import { getMovieDetail } from "../api/tmdb";
 
 function MovieDetail() {
-  const { id } = useParams();          
+  const { id } = useParams();
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      const data = await getMovieDetail(id);
-      setMovie(data);
-    };
-
-    fetchMovie();
+    getMovieDetail(id).then((data) => setMovie(data));
   }, [id]);
 
-  if (!movie) {
-    return <div>Loading...</div>;
-  }
+  if (!movie) return <div>Loading...</div>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <h1>{movie.title}</h1>
 
       <img
@@ -28,17 +21,8 @@ function MovieDetail() {
         alt={movie.title}
       />
 
-      <p>
-        <strong>평점:</strong> ⭐ {movie.vote_average}
-      </p>
+      <p>⭐ {movie.vote_average}</p>
 
-      <p>
-        <strong>개봉일:</strong> {movie.release_date}
-      </p>
-
-      <p>
-        <strong>줄거리:</strong>
-      </p>
       <p>{movie.overview}</p>
     </div>
   );
