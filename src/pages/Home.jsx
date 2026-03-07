@@ -5,9 +5,11 @@ import { getPopularMovies } from "../api/tmdb.js";
 function Home() {
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    getPopularMovies().then(data => setMovies(data.results));
-  }, []);
+ useEffect(() => {
+  getPopularMovies().then(data => {
+    setMovies(data.results);
+  });
+}, []);
   
   return (
     <div>
