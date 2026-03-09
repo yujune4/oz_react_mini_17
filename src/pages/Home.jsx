@@ -10,7 +10,7 @@ function Home() {
       setMovies(data.results);
     });
   }, []);
-console.log (movies)
+
   return (
     <div>
       <h1>영화 목록</h1>
