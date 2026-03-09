@@ -1,22 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
-import movieListData from "../data/movieListData.json";
+import { getPopularMovies } from "../api/tmdb";
 
 function Home() {
-  const [movies] = useState(movieListData.results);
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    getPopularMovies().then((data) => {
+      setMovies(data.results);
+    });
+  }, []);
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-      {movies.map((m) => (
-        <MovieCard
-          key={m.id}
-          poster={`https://image.tmdb.org/t/p/w500${m.poster_path}`}
-          title={m.title}
-          rating={m.vote_average}
-        />
-      ))}
+    <div>
+      <h1>영화 목록</h1>
+
+      <div className="movie-list">
+        {movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }
 
-export default Home;
+export default Home
