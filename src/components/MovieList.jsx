@@ -1,47 +1,29 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { getPopularMovies, searchMovies } from "../api/tmdb";
+import { getPopularMovies } from "../data/tmdb"; // 파일 경로를 확인하세요!
+import MovieCard from "../components/MovieCard";
 
-function MovieList() {
-
+export default function MovieList() {
   const [movies, setMovies] = useState([]);
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get("query");
 
   useEffect(() => {
-
     const fetchMovies = async () => {
-
-      let data;
-
-      if (query) {
-        data = await searchMovies(query);
-      } else {
-        data = await getPopularMovies();
-      }
-
-      const filteredMovies = data.results.filter(
-        (movie) => movie.adult === false
-      );
-
-      setMovies(filteredMovies);
+      const data = await getPopularMovies();
+      // TMDB 결과는 data.results 안에 배열로 들어있습니다.
+      setMovies(data.results || []); 
     };
-
     fetchMovies();
-
-  }, [query]);
+  }, []);
 
   return (
-    <div>
-      <h2>{query ? `Search Result: ${query}` : "Popular Movies"}</h2>
-
-      {movies.map((movie) => (
-        <div key={movie.id}>
-          {movie.title}
-        </div>
-      ))}
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold text-center my-8">인기 영화 목록</h1>
+      
+      {/* Grid 레이아웃 적용 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }
-
-export default MovieList;
