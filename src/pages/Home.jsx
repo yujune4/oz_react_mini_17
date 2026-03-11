@@ -1,27 +1,17 @@
-import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
-import { getPopularMovies } from "../api/tmdb";
 
-function Home() {
-  const [movies, setMovies] = useState([]);
+const movies = [
+  { id: 1, title: "Movie 1", genre: "Action", image: "https://via.placeholder.com/300x200" },
+  { id: 2, title: "Movie 2", genre: "Drama", image: "https://via.placeholder.com/300x200" },
+  { id: 3, title: "Movie 3", genre: "Comedy", image: "https://via.placeholder.com/300x200" },
+];
 
-  useEffect(() => {
-    getPopularMovies().then((data) => {
-      setMovies(data.results);
-    });
-  }, []);
-
+export default function Home() {
   return (
-    <div>
-      <h1>영화 목록</h1>
-
-      <div className="movie-list">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {movies.map(movie => (
+        <MovieCard key={movie.id} movie={movie} />
+      ))}
     </div>
   );
 }
-
-export default Home
